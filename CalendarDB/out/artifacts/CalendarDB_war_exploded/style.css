@@ -1,0 +1,98 @@
+body {
+  font-size:100%;
+}
+
+.container {
+    width: 100%;
+    display: block;
+    height: 520px;
+}
+
+.calContainer {
+ width:350px;
+ background-color: #ced6e2;
+  border-radius: 20px 20px;
+  padding:10px;
+}
+
+.eventContainer {
+    width:170px;
+    background-color: #ced6e2;
+    border-radius: 20px 20px;
+    padding:10px;
+}
+
+.addEventContainer form {
+    margin: 0 auto;
+    align-content: center;
+}
+
+.sub50 {
+    width:49%;
+    display: inline-block;
+    float: left;
+}
+
+.sub25 {
+    width:24%;
+    display: inline-block;
+    float: left;
+}
+
+.currentDay {
+	color: red;
+}
+
+.header {
+  background-color:#e21616;
+  border-radius: 20px 20px;
+}
+
+h1 {
+  display:inline-block;
+  padding-left: 10px;
+  padding-right:10px;
+  width:52%;
+  text-align:center;
+  color:white;
+}
+
+.header button {
+  width: 20%;
+  height:100px;
+  border: #7c0101;
+  background-color:#e21616;
+  color:white;
+  font-size:130%;
+  border-radius: 20px 20px;
+  outline: none
+}
+
+th {
+  font-size:120%;
+  height:50px;
+  width:50px;
+}
+
+td {
+  height:50px;
+  width:50px;
+  font-size:120%;
+  text-align:center;
+  box-shadow: 0.2px 0.4px steelblue;
+}
+
+td:hover {
+  color: red;
+  background-color: #acb3bf;
+}
+
+@media only screen and (max-width : 1024px) /*Why don't you work? */ {
+    .sub50 {
+        display: block !important;
+    }
+
+    .sub25 {
+        display: block !important;
+    }
+}

@@ -13,8 +13,9 @@ public class PrintEventsForMonth extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String date = req.getParameter("date");
         PrintWriter out = resp.getWriter();
-        out.print("<h3>List of Events for this month:</h3>");
-       EventHolder.generateQueryToPrintEventsForASpecificMonth(out,date);
+        out.print("<h3 class=\"header\">List of Events for this month:</h3>");
+        EventHolder.generateQueryToPrintEventsForASpecificMonth(out,date);
+        out.close();
     }
 
 }

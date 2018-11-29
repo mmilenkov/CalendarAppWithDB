@@ -2,10 +2,56 @@ body {
   font-size:100%;
 }
 
+#eventList {
+    max-height: 500px;
+    overflow: auto;
+    background-color: #ced6e2;
+    border-radius:20px 20px;
+    padding:10px;
+    text-align:center;
+}
+
+#eventList th {
+    padding: 10px;
+}
+
+#eventList th {
+    font-size: 120%;
+}
+
+#eventList td{
+    padding: 10px;
+}
+
+.buttonStyle {
+    color:white;
+    background-color:red;
+    border-radius:20px;
+    margin: 9px;
+    padding:10px;
+    border: none;
+    outline: none;
+}
+
+.buttonStyle:hover {
+    background-color:#a00101;
+}
+
 .container {
     width: 100%;
     display: block;
     height: 520px;
+}
+
+.header button {
+    width: 20%;
+    height:100px;
+    border: #7c0101;
+    background-color:#e21616;
+    color:white;
+    font-size:130%;
+    border-radius: 20px 20px;
+    outline: none;
 }
 
 .calContainer {
@@ -15,11 +61,28 @@ body {
   padding:10px;
 }
 
+.calContainer th {
+    font-size:120%;
+    height:50px;
+    width:50px;
+}
+
+.calContainer td {
+    height:50px;
+    width:50px;
+    font-size:120%;
+}
+.calContainer td:hover {
+    color: red;
+    background-color: #acb3bf;
+}
+
 .eventContainer {
     width:170px;
     background-color: #ced6e2;
     border-radius: 20px 20px;
     padding:10px;
+    text-align: center;
 }
 
 .addEventContainer form {
@@ -28,15 +91,22 @@ body {
 }
 
 .sub50 {
-    width:49%;
+    width:51%;
     display: inline-block;
-    float: left;
+    padding-right:2%;
+    float:left;
 }
 
-.sub25 {
-    width:24%;
+.sub15 {
+    width:14%;
     display: inline-block;
-    float: left;
+    float:left;
+}
+
+.sub35 {
+    width: 31%;
+    display: inline-block;
+    float:left;
 }
 
 .currentDay {
@@ -57,34 +127,17 @@ h1 {
   color:white;
 }
 
-.header button {
-  width: 20%;
-  height:100px;
-  border: #7c0101;
-  background-color:#e21616;
-  color:white;
-  font-size:130%;
-  border-radius: 20px 20px;
-  outline: none
-}
-
-th {
-  font-size:120%;
-  height:50px;
-  width:50px;
+h3 {
+    color: white;
+    padding-top:20px;
+    padding-bottom:20px;
+    margin-top: 0;
+    margin-bottom:0;
 }
 
 td {
-  height:50px;
-  width:50px;
-  font-size:120%;
-  text-align:center;
-  box-shadow: 0.2px 0.4px steelblue;
-}
-
-td:hover {
-  color: red;
-  background-color: #acb3bf;
+    box-shadow: 0.2px 0.4px steelblue;
+    text-align:center;
 }
 
 @media only screen and (max-width : 1024px) /*Why don't you work? */ {

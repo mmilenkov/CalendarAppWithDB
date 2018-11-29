@@ -12,7 +12,8 @@ public class PrintAllEvents extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter out = resp.getWriter();
-        out.print("<h3>List of all events:</h3>");
+        out.print("<h3 class=\"header\">List of all events:</h3>");
         EventHolder.generateQueryToPrintAllEvents(out);
+        out.close();
     }
 }

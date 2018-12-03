@@ -6,17 +6,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/PrintMonth")
-public class PrintEventsForMonth extends HttpServlet {
+@WebServlet("/PrintDay")
+public class PrintEventsForDay extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String date = req.getParameter("date");
         PrintWriter out = resp.getWriter();
-        out.print("<h3 class=\"header\">List of Events for this month:</h3>");
-        EventHolder.generateQueryToPrintEventsForASpecificMonth(date);
-        EventHolder.printEventsFromList(out);
+        out.print("<h3 class=\"header\">List of Events for the selected Day:</h3>");
+        EventHolder.generateQueryToPrintEventsForASpecificDay(date);
+        EventHolder.printEventsFromList(out);;
         out.close();
     }
-
 }

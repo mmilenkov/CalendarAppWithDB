@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container">
-    <div class="sub50">
+    <div class="sub35">
         <div class="calContainer">
             <div class="header">
                 <button class="button" id="previous" onclick="previous()"><</button> <!-- tired of the event listener breaking -->
@@ -35,99 +35,179 @@
         </div>
     </div>
 
-    <div class="sub25">
-        <div class="eventContainer">
-            <form id="addEvent" method="GET" action="/AddEvent">
-                <h3>Add an Event:</h3>
-                Date:
-                <input type="text" name="eventDate" placeholder="dd-mm-yyyy" pattern="\d{1,2}-\d{1,2}-\d{4}" required><br>
-                Name for event:
-                <input type="text" name="eventName" placeholder="Event Name" required><br>
-                Location:
-                <input type="text" name="eventLocation" placeholder="Location" required><br>
-                Starting time:
-                <input type="text" name="eventStart" placeholder="00:00" pattern="((0\d)|(1\d)|(2[0-3])):((0\d)|([1-6]\d))" required><br>
-                End time:
-                <input type="text" name="eventEnd" placeholder="23:59" pattern="((0\d)|(1\d)|(2[0-3])):((0\d)|([1-6]\d))" required><br>
-                <input type="submit" name="submitForm">
-                <input type="reset">
-            </form>
+    <div class="sub50">
+        <div id="eventList">
+
         </div>
     </div>
 
-    <div class="sub25">
-        <div class="eventContainer">
-            <form id="editEvent" method="POST" action="/EditEvent">
-                <h3>Edit an Event:</h3>
-                Event ID:
-                <input type="text" name="eventID" pattern="\d+" required><br>
-                Date:
-                <input type="text" name="eventDate" placeholder="dd-mm-yyyy" pattern="\d{1,2}-\d{1,2}-\d{4}" required><br>
-                Name for event:
-                <input type="text" name="eventName" placeholder="Event Name" required><br>
-                Location:
-                <input type="text" name="eventLocation" placeholder="Location" required><br>
-                Starting time:
-                <input type="text" name="eventStart" placeholder="00:00" pattern="((0\d)|(1\d)|(2[0-3])):((0\d)|([1-6]\d))" required><br>
-                End time:
-                <input type="text" name="eventEnd" placeholder="23:59" pattern="((0\d)|(1\d)|(2[0-3])):((0\d)|([1-6]\d))" required><br>
-                <input type="submit" name="submitForm">
-                <input type="reset">
-            </form>
-        </div>
+    <div class="sub15">
+        <div id="eventControlContainer"></div>
     </div>
 
-    <div class="sub25">
-        <div class="eventContainer">
-            <form id="deleteEvent" method="GET" action ="/DeleteEvent">
-                <h3>Delete an Event:</h3>
-                Event ID:
-                <input type="text" name="eventID" pattern="\d+" required><br>
-                <input type="submit" name="submitForm">
-                <input type="reset">
-            </form>
-        </div>
-    </div>
 </div>
 
-    <button onclick="printMonth()">PrintMonth</button>
-    <button onclick="printAllMonths()">PrintAllEvents</button>
-
-<div id="eventList">
-</div>
+<button class="buttonStyle" onclick=printMonth()>Print events for the month</button>
+<button class="buttonStyle" onclick=printAllMonths()>Print all events</button>
 
 <script>
-    var xmlhttp = new XMLHttpRequest();
+    let xmlhttp = new XMLHttpRequest();
+    let today = new Date();
+    let currMonth = today.getMonth();
+    let currYear = today.getFullYear();
+    let months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let monthAndYear = document.querySelector("#monthAndYear");
+    let eventList = document.querySelector("#eventList");
+    let selected;
+    let checkedCount;
+    let cellId;
+    let eventListSelection;
+
+    window.onload = function() {
+        printMonth();
+        genCal(currMonth, currYear);
+    };
 
     function printMonth() {
         xmlhttp.onreadystatechange=useResponse;
         xmlhttp.open("POST", "/PrintMonth", true);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        var monthYear = "date=" + currYear + "-" + (currMonth+1);
+        let monthYear = "date=" + currYear + "-" + (currMonth+1);
         xmlhttp.send(monthYear);
+        eventListSelection = "month";
     }
 
     function printAllMonths() {
         xmlhttp.onreadystatechange=useResponse;
         xmlhttp.open("GET", "/PrintAll", true);
         xmlhttp.send(null);
+        eventListSelection = "all";
+    }
+
+    function printSelectedDay() {
+        xmlhttp.onreadystatechange=useResponse;
+        xmlhttp.open("POST", "/PrintDay", true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        let monthYear = "date=" + currYear + "-" + (currMonth+1) + "-" + (cellId.substring(1,cellId.length));
+        xmlhttp.send(monthYear);
+        eventListSelection = "select";
     }
 
     function useResponse() {
         document.getElementById("eventList").innerHTML=xmlhttp.responseText;
     }
 
-    var today = new Date();
-    var currMonth = today.getMonth();
-    var currYear = today.getFullYear();
-    var months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    var monthAndYear = document.querySelector("#monthAndYear");
-    var eventList = document.querySelector("#eventList");
+    function printAddEventDiv() {
+        xmlhttp.onreadystatechange=useResponseEventControls;
+        xmlhttp.open("GET", "/AddEvent", true);
+        xmlhttp.send(null);
+        fillInAddEventDay()
+    }
 
-    genCal(currMonth, currYear);
+    //TODO Better solution?
+    function fillInAddEventDay() {
+        let addForm = document.querySelector("#addEvent");
+        if(addForm !== null) {
+            addForm.eventDate.value = cellId.substring(1, cellId.length) + "-" + (currMonth + 1) + "-" + currYear;
+        }
+        else {
+            setTimeout(fillInAddEventDay, 100);
+        }
+    }
+
+    function printEditEventDiv() {
+        checkForSelected();
+        if(checkedCount >1) {
+            alert("You can only edit one event at a time!")
+        }
+        if(checkedCount === 1) {
+            xmlhttp.onreadystatechange = useResponseEventControls;
+            xmlhttp.open("GET", "/EditEvent", true);
+            xmlhttp.send(null);
+            fillInEditEventID();
+        }
+    }
+
+    //TODO Better solution?
+    function fillInEditEventID() {
+        if(document.querySelector("#editEvent") !== null) {
+            let selectedId ="";
+            for (let i = 0; i < selected.length; i++) {
+                if (selected[i].checked) {
+                    selectedId = selected[i].value;
+                    break;
+                }
+            }
+            document.querySelector("#editEvent").eventID.value = selectedId;
+        }
+        else {
+            setTimeout(fillInEditEventID, 100);
+        }
+    }
+
+    //TODO Better way?
+    function deleteEvent() {
+        checkForSelected();
+        if(checkedCount >= 1) {
+            if (confirm("Would you like to delete the selected?")) {
+                let selectedIds = "";
+                for (let i = 0; i < selected.length; i++) {
+                    if (selected[i].checked) {
+                        if (selectedIds !== "") {
+                            selectedIds += "-";
+                        }
+                        selectedIds += selected[i].value;
+                    }
+                }
+                xmlhttp.open("POST", "/DeleteEvent", true);
+                let listOfIds = "eventID=" + selectedIds;
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlhttp.send(listOfIds);
+            }
+            reloadEventList();
+        }
+    }
+
+    function useResponseEventControls() {
+        document.getElementById("eventControlContainer").innerHTML=xmlhttp.responseText;
+    }
+
+    function checkForSelected() {
+        checkedCount = 0;
+        selected = document.getElementById("eventTableBody").getElementsByTagName("input");
+        for (let i = 0;i<selected.length;i++ ) {
+            if(selected[i].checked) {
+                checkedCount++;
+            }
+        }
+        if(checkedCount === 0)
+        {
+            alert("No events have been selected");
+        }
+
+        return checkedCount > 0;
+    }
+
+    function reloadEventList() {
+        switch (eventListSelection){
+            case all:
+                printAllMonths();
+                break;
+            case month:
+                printMonth();
+                break;
+            case select:
+                printSelectedDay();
+                break;
+            default:
+                printAllMonths();
+                break;
+        }
+    }
 
     function clearEventList() {
         eventList.innerHTML = " ";
+        printMonth();
     }
 
     function next() {
@@ -145,19 +225,19 @@
     }
 
     function genCal(month, year) {
-        var firstDay = (new Date(year, month)).getDay();
-        var daysInMonth = 32 - new Date(year, month, 32).getDate();
-        var tbl = document.querySelector("#calBody");
-        var date = 1;
+        let firstDay = (new Date(year, month)).getDay();
+        let daysInMonth = 32 - new Date(year, month, 32).getDate();
+        let tbl = document.querySelector("#calBody");
+        let date = 1;
         tbl.innerHTML = "";
         monthAndYear.innerHTML = months[month] + " " + year;
 
-        for (var i = 0; i < 6; i++) {
-            var row = document.createElement("tr");
-            for (var j = 0; j < 7; j++) {
+        for (let i = 0; i < 6; i++) {
+            let row = document.createElement("tr");
+            for (let j = 0; j < 7; j++) {
                 if (i === 0 && j < firstDay) {
-                    var cell = document.createElement("td");
-                    var cellText = document.createTextNode("");
+                    let cell = document.createElement("td");
+                    let cellText = document.createTextNode("");
                     cell.appendChild(cellText);
                     row.appendChild(cell);
                 }
@@ -165,11 +245,18 @@
                     break;
                 }
                 else {
-                    var cell = document.createElement("td");
-                    var cellText = document.createTextNode(date);
+                    let cell = document.createElement("td");
+                    let cellText = document.createTextNode(date);
                     if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
                         cell.classList.add("currentDay");
                     }
+                    cellId = "d"+date;
+                    cell.id = cellId;
+                    cell.addEventListener("click", function (ev) {
+                        cellId =ev.target.id;
+                        document.getElementById("eventControlContainer").innerHTML=" ";
+                        printSelectedDay();
+                    });
                     cell.appendChild(cellText);
                     row.appendChild(cell);
                     date++;

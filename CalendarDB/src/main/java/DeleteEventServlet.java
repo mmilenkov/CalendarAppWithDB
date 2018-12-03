@@ -9,10 +9,12 @@ import java.io.IOException;
 public class DeleteEventServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         String eventID = req.getParameter("eventID");
-        EventHolder.deleteEvent(Integer.valueOf(eventID));
-        resp.sendRedirect("http://localhost:8080/");
+        String [] eventIDArray = eventID.split("-");
+        for(String id : eventIDArray) {
+            EventHolder.removeEvent(Integer.valueOf(id));
+        }
     }
 }

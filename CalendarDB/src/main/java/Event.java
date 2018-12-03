@@ -1,15 +1,16 @@
 import java.time.LocalDateTime;
 
-public class Event {
+class Event {
     private String name;
     private String location;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private int id;
+    private int eventID;
+    private int locationId;
 
-    Event(int d,int m, int y, String name, String location, String startTime, String endTime) {
+    Event(int d,int m, int y, String name, int location, String startTime, String endTime) {
         this.name = name;
-        this.location = location;
+        this.locationId = location;
         startDate = LocalDateTime.of(y,m,d,Integer.valueOf(startTime.substring(0,2)),Integer.valueOf(startTime.substring(3)));
         endDate = LocalDateTime.of(y,m,d,Integer.valueOf(endTime.substring(0,2)),Integer.valueOf(endTime.substring(3)));
     }
@@ -19,11 +20,11 @@ public class Event {
         this.startDate = startDate;
         this.endDate = endDate;
         this.location = location;
-        this.id = id;
+        this.eventID = id;
     }
 
-    int getId() {
-        return id;
+    int getEventID() {
+        return eventID;
     }
 
     String getName() {
@@ -32,6 +33,10 @@ public class Event {
 
     String getLocation() {
         return location;
+    }
+
+    int getLocationId() {
+        return  locationId;
     }
 
     LocalDateTime getStartDate () {

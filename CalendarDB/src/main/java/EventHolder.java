@@ -3,10 +3,11 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+@SuppressWarnings("Duplicates") //Duplicates when closing the connections to the db
 class EventHolder {
 
     private static ArrayList<Event> eventList = new ArrayList<Event>();
-    private final static String dbUrl = "jdbc:mysql://localhost:3306/event_list";
+    private final static String dbUrl = "jdbc:mysql://localhost:3306/event_list?useSSL=false";
     private final static String dbUser = "root";
     private final static String dbPass = "admin15";
 
@@ -43,8 +44,11 @@ class EventHolder {
         }
         finally {
             try {
-                if(stmt != null) {
+                if (stmt != null) {
                     stmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
                 }
             }
             catch (SQLException e) {
@@ -71,13 +75,13 @@ class EventHolder {
         }
         finally {
             try {
-                if(stmt != null) {
+                if (stmt != null) {
                     stmt.close();
                 }
-                /* SSL ERROR - Why?
-                if(connection != null) {
+                /* SSL ERROR - Why? */
+                if (connection != null) {
                     connection.close();
-                }*/
+                }
             }
             catch (SQLException e) {
                 e.printStackTrace();
@@ -103,8 +107,11 @@ class EventHolder {
         }
         finally {
             try {
-                if(stmt != null) {
+                if (stmt != null) {
                     stmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
                 }
             }
             catch (SQLException e) {
@@ -130,8 +137,11 @@ class EventHolder {
         }
         finally {
             try {
-                if(stmt != null) {
+                if (stmt != null) {
                     stmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
                 }
             }
             catch (SQLException e) {
@@ -162,8 +172,11 @@ class EventHolder {
         }
         finally {
             try {
-                if(stmt != null) {
+                if (stmt != null) {
                     stmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
                 }
             }
             catch (SQLException e) {
@@ -178,7 +191,7 @@ class EventHolder {
                 "ORDER BY `event`.`start_date`";
         retrieveEvents(query);
     }
-    /*Move these to servlets? */
+    /* Move these to servlets? */
     static void generateQueryToPrintEventsForASpecificMonth(String date) {
         String selectedPeriodStart = "'" + date + "-01'";
         String selectedPeriodEnd = "'" + handleDateIncrementation(date) + "-01'";
@@ -187,7 +200,7 @@ class EventHolder {
                 "WHERE `event`.`start_date` BETWEEN " + selectedPeriodStart + "AND " +selectedPeriodEnd;
         retrieveEvents(query);
     }
-
+    /* Move these to servlets? */
     static void generateQueryToPrintEventsForASpecificDay(String date) {
         String query = "SELECT `event`.`event_id`,`event`.`start_date`,`event`.`end_date`,`event`.`name`,`location_list`.`location`" +
                 " FROM `event` LEFT JOIN `location_list` ON `event`.`location_id`=`location_list`.`location_id` " +
@@ -200,7 +213,7 @@ class EventHolder {
         int year = Integer.valueOf(slice[0]);
         int month = Integer.valueOf(slice[1]);
         if(month == 12) {
-            year+=1;
+            year += 1;
         }
         if(month == 12) {
             month = 1;
@@ -208,7 +221,7 @@ class EventHolder {
         else {
             month += 1;
         }
-        return (year + "-"+ month);
+        return (year + "-" + month);
     }
 
     static void printEventsFromList(PrintWriter out) {

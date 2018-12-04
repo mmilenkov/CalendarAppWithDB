@@ -13,7 +13,6 @@ public class AddEventServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         String date = req.getParameter("eventDate");
-        System.out.println(req.getParameter("eventDate"));
         String[] sDate = date.split("-");
         Event event = new Event(Integer.valueOf(sDate[0]),Integer.valueOf(sDate[1]),Integer.valueOf(sDate[2]),
                 req.getParameter("eventName"),Integer.valueOf(req.getParameter("locationList")),
@@ -38,7 +37,7 @@ public class AddEventServlet extends HttpServlet {
                 + "</div>"
                 + "<form id=\"addEvent\" method=\"POST\" action=\"/AddEvent\">"
                 + "Date:"
-                + "<input type=\"text\" name=\"eventDate\" placeholder=\"dd-mm-yyyy\""
+                + "<input type=\"text\" name=\"eventDate\" placeholder=\"dd-mm-yyyy\" "
                 + "pattern=\"\\d{1,2}-\\d{1,2}-\\d{4}\" required><br>"
                 + "Name for event:"
                 + "<input type=\"text\" name=\"eventName\" placeholder=\"Event Name\" required><br>"
@@ -49,10 +48,10 @@ public class AddEventServlet extends HttpServlet {
         out.print(
                 "</select><br>"
                 + "Starting time:"
-                + "<input type=\"text\" name=\"eventStart\" placeholder=\"00:00\""
+                + "<input type=\"text\" name=\"eventStart\" placeholder=\"00:00\" "
                 + "pattern=\"((0\\d)|(1\\d)|(2[0-3])):((0\\d)|([1-6]\\d))\" required><br>"
                 + "End time:"
-                + "<input type=\"text\" name=\"eventEnd\" placeholder=\"23:59\""
+                + "<input type=\"text\" name=\"eventEnd\" placeholder=\"23:59\" "
                 + "pattern=\"((0\\d)|(1\\d)|(2[0-3])):((0\\d)|([1-6]\\d))\" required><br>"
                 + "<input class=\"buttonStyle\" type=\"submit\" name=\"submitForm\" onclick=\"submitNewEvent(ev)\">"
                 + "<input class=\"buttonStyle\" type=\"reset\">"

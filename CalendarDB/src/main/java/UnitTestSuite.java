@@ -58,10 +58,10 @@ public class UnitTestSuite {
         EventHolder.printLocationOptionsFromDb(testPrintWriter);
         /* If new options are added to the location list they need to be added here ! */
         String testedOutput = testWriter.toString();
-        assertEquals("\"<option value=\"" +1 +"\">Sofia</option>\"" +
-                "\"<option value=\"" + 2 + "\">Burgas</option>\"" +
-                "\"<option value=\"" + 3 +"\">Ruse</option>\"" +
-                "\"<option value=\"" + 4 + "\">Skopje</option>\"",testedOutput);
+        assertEquals("\"<option value=\"1\">Sofia</option>\"" +
+                "\"<option value=\"2\">Burgas</option>\"" +
+                "\"<option value=\"3\">Ruse</option>\"" +
+                "\"<option value=\"4\">Skopje</option>\"",testedOutput);
         testPrintWriter.close();
         testWriter.close();
     }
@@ -131,14 +131,17 @@ public class UnitTestSuite {
         PrintWriter testPrintWriter = new PrintWriter(testStringWriter);
         AddEventServlet.printAddEventDiv(testPrintWriter);
         String testedOutput = testStringWriter.toString();
-        /*This test needs to chance if more options are added. */
+        /*This test needs to change if more options are added. */
         assertEquals("<div class=\"eventContainer\"><div class=\"header\"><h3>Add an Event:</h3></div>" +
                 "<form id=\"addEvent\" method=\"POST\" action=\"/AddEvent\">Date:<input type=\"text\" name=\"eventDate\" " +
                 "placeholder=\"dd-mm-yyyy\" pattern=\"\\d{1,2}-\\d{1,2}-\\d{4}\" required><br>Name for event:<input type=\"text\" " +
                 "name=\"eventName\" placeholder=\"Event Name\" required><br>Location: &nbsp;<select name=\"locationList\" " +
-                "form=\"addEvent\"><br>\"<option value=\"1\">Sofia</option>\"\"<option value=\"2\">Burgas</option>\"\"" +
-                "<option value=\"3\">Ruse</option>\"\"<option value=\"4\">Skopje</option>\"</select>" +
-                "<br>Starting time:<input type=\"text\" name=\"eventStart\" placeholder=\"00:00\" " +
+                "form=\"addEvent\"><br>\"" +
+
+                "<option value=\"1\">Sofia</option>\"\"<option value=\"2\">Burgas</option>\"\"" +
+                "<option value=\"3\">Ruse</option>\"\"<option value=\"4\">Skopje</option>\"" +
+
+                "</select><br>Starting time:<input type=\"text\" name=\"eventStart\" placeholder=\"00:00\" " +
                 "pattern=\"((0\\d)|(1\\d)|(2[0-3])):((0\\d)|([1-6]\\d))\" required><br>End time:<input type=\"text\" name=\"eventEnd\" " +
                 "placeholder=\"23:59\" pattern=\"((0\\d)|(1\\d)|(2[0-3])):((0\\d)|([1-6]\\d))\" required><br><input class=\"buttonStyle\" " +
                 "type=\"submit\" name=\"submitForm\" onclick=\"submitNewEvent(ev)\"><input class=\"buttonStyle\" type=\"reset\">" +
@@ -153,15 +156,18 @@ public class UnitTestSuite {
         PrintWriter testPrintWriter = new PrintWriter(testStringWriter);
         EditEventServlet.printEditEventDiv(testPrintWriter);
         String testedOutput = testStringWriter.toString();
-        /*This test needs to chance if more options are added. */
+        /*This test needs to change if more options are added. */
         assertEquals("<div class=\"eventContainer\"><div class=\"header\">" +
                 "<h3>Edit Selected Event:</h3></div><form id=\"editEvent\" method=\"POST\" action=\"/EditEvent\">" +
                 "<input type=\"hidden\" name=\"eventID\">New Date:" +
                 "<input type=\"text\" name=\"eventDate\" placeholder=\"dd-mm-yyyy\" pattern=\"\\d{1,2}-\\d{1,2}-\\d{4}\" required>" +
                 "<br>New Name for event:<input type=\"text\" name=\"eventName\" placeholder=\"Event Name\" required>" +
                 "<br>New Location: &nbsp;<select name=\"locationList\" form=\"editEvent\" required>\"" +
+
                 "<option value=\"1\">Sofia</option>\"\"<option value=\"2\">Burgas</option>\"\"<option value=\"3\">Ruse</option>\"\"" +
-                "<option value=\"4\">Skopje</option>\"</select><br>New Starting time:" +
+                "<option value=\"4\">Skopje</option>\"" +
+
+                "</select><br>New Starting time:" +
                 "<input type=\"text\" name=\"eventStart\" placeholder=\"00:00\" pattern=\"((0\\d)|(1\\d)|(2[0-3])):((0\\d)|([1-6]\\d))\" required>" +
                 "<br>New End time:<input type=\"text\" name=\"eventEnd\" placeholder=\"23:59\" pattern=\"((0\\d)|(1\\d)|(2[0-3])):((0\\d)|([1-6]\\d))\" required>" +
                 "<br><input class=\"buttonStyle\" type=\"submit\" name=\"submitForm\"><input class=\"buttonStyle\" type=\"reset\"></form></div>", testedOutput);

@@ -92,7 +92,7 @@ function fillInEditEventID() {
     }
 }
 
-//TODO Better way?
+//TODO Better solution?
 function removeEvent() {
     checkForSelected();
     if(checkedCount >= 1) {

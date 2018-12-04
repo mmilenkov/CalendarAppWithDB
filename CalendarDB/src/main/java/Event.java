@@ -8,9 +8,9 @@ class Event {
     private int eventID;
     private int locationId;
 
-    Event(int d,int m, int y, String name, int location, String startTime, String endTime) {
+    Event(int d,int m, int y, String name, int locationId, String startTime, String endTime) {
         this.name = name;
-        this.locationId = location;
+        this.locationId = locationId;
         startDate = LocalDateTime.of(y,m,d,Integer.valueOf(startTime.substring(0,2)),Integer.valueOf(startTime.substring(3)));
         endDate = LocalDateTime.of(y,m,d,Integer.valueOf(endTime.substring(0,2)),Integer.valueOf(endTime.substring(3)));
     }
